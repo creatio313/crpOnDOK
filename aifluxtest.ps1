@@ -1,0 +1,95 @@
+﻿# =====初期設定値=====
+$ACCESSTOKEN = "高火力DOKのアクセストークンを設定してください"
+$ACCESSTOKENSECRET = "高火力DOKのアクセストークンシークレットを設定してください"
+
+$URI = "https://secure.sakura.ad.jp/cloud/zone/is1a/api/managed-container/1.0/tasks/"
+
+# =====タスク向け設定値=====
+$IMAGENAME = "コンテナレジストリに登録したDockerイメージ名を設定してください"
+$REGISTRYID = "レジストリ認証情報のIDを設定してください"
+
+$S3_ENDPOINT = "https://s3.isk01.sakurastorage.jp"
+$S3_TOKEN = "さくらのオブジェクトストレージのアクセストークンを設定してください"
+$S3_SECRET = "さくらのオブジェクトストレージのアクセストークンシークレットを設定してください"
+$S3_BUCKET = "さくらのオブジェクトストレージのバケット名を設定してください"
+
+# =====AI向け設定値=====
+$steps = 40
+$num_images = 1
+$batch = 1
+
+# 入力データの処理
+
+# csvパス、ファイルの検証
+if ($Args.Count -lt 1 -or [string]::IsNullOrWhiteSpace($Args[0])) {
+    throw "csvファイルのパスを指定してください。"
+}
+$CsvPath = $Args[0]
+if (-not (Test-Path -LiteralPath $CsvPath)) {
+    throw "指定されたcsvファイルが見つかりません: $CsvPath"
+}
+
+# csvの読み込み
+$CsvFile = Get-Item -LiteralPath $CsvPath # ファイル情報を取得
+$rows = Import-Csv -LiteralPath $CsvPath
+$promptList = @()
+
+# 二次元配列化
+foreach ($r in $rows) {
+    # [prefix, prompt] の形式で配列に追加
+    $promptList += ,@($r.prefix, $r.prompt, $r.ng_prompt)
+}
+$promptJsonString = ConvertTo-Json @($promptList) -Compress
+
+# Basic認証ヘッダ作成 
+$pair = "$ACCESSTOKEN`:$ACCESSTOKENSECRET"
+$bytes = [System.Text.Encoding]::ASCII.GetBytes($pair)
+$encoded = [Convert]::ToBase64String($bytes)
+
+$headers = @{
+    "Authorization" = "Basic $encoded"
+    "Content-Type"  = "application/json"
+    "Accept"        = "application/json"
+}
+
+# csvの各行を読み込み、高火力DOKのタスク登録を行う。
+
+# 送信するJSONボディ =====
+$bodyObject = @{
+    name = $CsvFile.BaseName + "Task"
+    containers = @(
+        @{
+            image    = $IMAGENAME
+            registry = $REGISTRYID
+            command  = @()
+            entrypoint = @()
+            environment = @{
+                S3_ENDPOINT = $S3_ENDPOINT
+                S3_TOKEN = $S3_TOKEN
+                S3_SECRET = $S3_SECRET
+                S3_BUCKET = $S3_BUCKET
+                PROMPT = $promptJsonString
+                STEPS = $steps
+                NUM_IMAGES = $num_images
+                BATCH = $batch
+            }
+            plan = "v100-32gb"
+        }
+    )
+    tags = @()
+    execution_time_limit_sec = $null
+}
+
+# JSON化（ネストが深いのでDepthを上げる）
+$bodyJson = $bodyObject | ConvertTo-Json -Depth 20
+
+# ===== POSTリクエスト =====
+$response = Invoke-RestMethod `
+    -Method Post `
+    -Uri $URI `
+    -Headers $headers `
+    -Body $bodyJson
+# ===== タスクURLの表示 =====
+$taskURL = "タスクを登録しました：https://secure.sakura.ad.jp/koukaryoku-container/tasks/detail/" + $response.id
+
+$taskURL
