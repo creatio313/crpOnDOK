@@ -4,7 +4,7 @@
 - Dockerfile：DOK上で動かすコンテナイメージの元ファイル。curlのアクセストークン部分をcivitaiで取得したアクセストークンに置換してください。
 - docker-entrypoint.sh：Dockerのエントリーポイント。変更不要です。
 - runner.py：GPU上で、CyberRealistic Ponyを動かすPythonスクリプトです。変更不要です。
-- aifluxtest.ps1：Windows PowerShellから高火力DOKのAPIを呼び出し、画像生成タスクを作成します。使用時には各種認証情報を入力して下さい。第一引数にプロンプトを記述したcsvを配置して下さい。STEP数やbatch等のパラメータは適宜変更して下さい。
+- .ps1：Windows PowerShellから高火力DOKのAPIを呼び出し、画像生成タスクを作成します。使用時には各種認証情報を入力して下さい。第一引数にプロンプトを記述したcsvを配置して下さい。STEP数やbatch等のパラメータは適宜変更して下さい。
 - imagePrompts.csv：CSVファイルのひな形です。ファイル名接頭辞、プロンプト、ネガティブプロンプトを記述します。
 
 ## 使用順序
