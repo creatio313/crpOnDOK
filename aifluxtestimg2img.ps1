@@ -14,9 +14,8 @@ $S3_SECRET = "さくらのオブジェクトストレージのアクセストー
 $S3_BUCKET = "さくらのオブジェクトストレージのバケット名を設定してください"
 
 # =====AI向け設定値=====
-$steps = 30
-$num_images = 1
-$batch = 1
+$steps = 40
+$strength = 0.3
 
 # 入力データの処理
 
@@ -36,8 +35,8 @@ $promptList = @()
 
 # 二次元配列化
 foreach ($r in $rows) {
-    # [prefix, prompt] の形式で配列に追加
-    $promptList += ,@($r.prefix, $r.prompt, $r.ng_prompt)
+    # [filename, prompt, ng_prompt, suffix] の形式で配列に追加
+    $promptList += ,@($r.filename, $r.prompt, $r.ng_prompt, $r.suffix)
 }
 $promptJsonString = ConvertTo-Json @($promptList) -Compress
 
@@ -62,7 +61,7 @@ $bodyObject = @{
             image    = $IMAGENAME
             registry = $REGISTRYID
             command  = @()
-            entrypoint = @()
+            entrypoint = @("/docker-entrypoint_img2img.sh")
             environment = @{
                 S3_ENDPOINT = $S3_ENDPOINT
                 S3_TOKEN = $S3_TOKEN
@@ -70,8 +69,7 @@ $bodyObject = @{
                 S3_BUCKET = $S3_BUCKET
                 PROMPT = $promptJsonString
                 STEPS = $steps
-                NUM_IMAGES = $num_images
-                BATCH = $batch
+                STRENGTH = $strength
             }
             plan = "h100-80gb"
         }

@@ -19,7 +19,7 @@ arg_parser.add_argument(
 )
 arg_parser.add_argument(
     '--prompt', 
-    default='[["cypony-", "An astronaut riding a green horse","score_6, score_5, score_4, (worst quality:1.2), (low quality:1.2), (normal quality:1.2), lowres, bad anatomy, bad hands, signature, watermarks, ugly, imperfect eyes, skewed eyes, unnatural face, unnatural body, error, extra limb, missing limbs"]]', 
+    default='[["cypony-", "score_9, score_8_up, score_7_up, An astronaut riding a green horse","score_6, score_5, score_4, (worst quality:1.2), (low quality:1.2), (normal quality:1.2), lowres, bad anatomy, bad hands, signature, watermarks, ugly, imperfect eyes, skewed eyes, unnatural face, unnatural body, error, extra limb, missing limbs"]]', 
     help='[["prefix", "prompt","ng_prompt"], ...] 形式のJSON文字列を指定します。'
 )
 arg_parser.add_argument(
@@ -53,8 +53,7 @@ tasks = json.loads(args.prompt)
 print('Start loading CyberRealistic Pony')
 pipe = StableDiffusionXLPipeline.from_single_file(
     "/cyberrealisticpony/cyberrealisticPony_v150.safetensors",
-    torch_dtype=torch.float16,
-    variant="fp16",
+    torch_dtype=torch.bfloat16,
     use_safetensors=True,
 )
 

@@ -36,6 +36,7 @@ RUN curl -L "https://civitai.com/api/download/models/2469412?type=Model&format=S
          -o /cyberrealisticpony/cyberrealisticPony_v150.safetensors
 
 COPY runner.py /cyberrealisticpony/
+COPY runner_img2img.py /cyberrealisticpony/
 COPY docker-entrypoint*.sh /
 RUN chmod +x /docker-entrypoint*.sh /
 
