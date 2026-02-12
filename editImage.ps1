@@ -8,10 +8,11 @@ $URI = "https://secure.sakura.ad.jp/cloud/zone/is1a/api/managed-container/1.0/ta
 $IMAGENAME = "コンテナレジストリに登録したDockerイメージ名を設定してください"
 $REGISTRYID = "レジストリ認証情報のIDを設定してください"
 
-$S3_ENDPOINT = "https://s3.isk01.sakurastorage.jp"
-$S3_TOKEN = "さくらのオブジェクトストレージのアクセストークンを設定してください"
-$S3_SECRET = "さくらのオブジェクトストレージのアクセストークンシークレットを設定してください"
-$S3_BUCKET = "さくらのオブジェクトストレージのバケット名を設定してください"
+$OBJST_ENDPOINT = "https://s3.isk01.sakurastorage.jp"
+$OBJST_TOKEN = "さくらのオブジェクトストレージのアクセストークンを設定してください"
+$OBJST_SECRET = "さくらのオブジェクトストレージのアクセストークンシークレットを設定してください"
+$OBJST_INPUT_BUCKET = "編集元画像を格納するバケット名を設定してください"
+$OBJST_OUTPUT_BUCKET = "出力画像を格納するバケット名を設定してください"
 
 # =====AI向け設定値=====
 $steps = 40
@@ -63,10 +64,11 @@ $bodyObject = @{
             command  = @()
             entrypoint = @("/docker-entrypoint_img2img.sh")
             environment = @{
-                S3_ENDPOINT = $S3_ENDPOINT
-                S3_TOKEN = $S3_TOKEN
-                S3_SECRET = $S3_SECRET
-                S3_BUCKET = $S3_BUCKET
+                OBJST_ENDPOINT = $OBJST_ENDPOINT
+                OBJST_TOKEN = $OBJST_TOKEN
+                OBJST_SECRET = $OBJST_SECRET
+                OBJST_INPUT_BUCKET = $OBJST_INPUT_BUCKET
+                OBJST_OUTPUT_BUCKET = $OBJST_OUTPUT_BUCKET
                 PROMPT = $promptJsonString
                 STEPS = $steps
                 STRENGTH = $strength

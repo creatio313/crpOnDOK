@@ -20,7 +20,7 @@ Docker imageをbuild、pushします。
 ```sh
 sudo docker build -t [コンテナレジストリ設定名].sakuracr.jp/[任意設定値]:latest .
 
-sudo docker login [コンテナレジストリ設定名].sakuracr.jp/[任意設定値]
+sudo docker login [コンテナレジストリ設定名].sakuracr.jp
 Username:コンテナレジストリのユーザー名
 Password:コンテナレジストリのパスワード
 

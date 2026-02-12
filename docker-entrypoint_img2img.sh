@@ -25,10 +25,11 @@ python3 runner_img2img.py \
   --height="${HEIGHT:-1152}" \
   --output="${SAKURA_ARTIFACT_DIR}" \
   --prompt="${PROMPT}" \
-  --s3-bucket="${S3_BUCKET:-}" \
-  --s3-endpoint="${S3_ENDPOINT:-}" \
-  --s3-secret="${S3_SECRET:-}" \
-  --s3-token="${S3_TOKEN:-}" \
+  --objst-input-bucket="${OBJST_INPUT_BUCKET:-}" \
+  --objst-output-bucket="${OBJST_OUTPUT_BUCKET:-}" \
+  --objst-endpoint="${OBJST_ENDPOINT:-}" \
+  --objst-secret="${OBJST_SECRET:-}" \
+  --objst-token="${OBJST_TOKEN:-}" \
   --steps="${STEPS:-20}" \
   --strength="${STRENGTH:-0.75}" \
   --width="${WIDTH:-896}"
