@@ -12,10 +12,10 @@ RUN apt-get update && \
         git \
         ca-certificates \
         curl \
-        libgl1 \
-        libglib2.0-0 && \
         python3 \
         python3-pip \
+        libgl1 \
+        libglib2.0-0 && \
     rm -rf /var/lib/apt/lists/* && \
     pip install torch torchvision --index-url https://download.pytorch.org/whl/cu128 && \
     pip install git+https://github.com/huggingface/diffusers@main && \
@@ -34,7 +34,7 @@ RUN apt-get update && \
 
 WORKDIR /cyberrealisticpony
 
-RUN curl -L "https://civitai.com/api/download/models/2469412?type=Model&format=SafeTensor&size=pruned&fp=fp16&token=アクセストークンに置換" \
+RUN curl -L "https://civitai.com/api/download/models/2469412?type=Model&format=SafeTensor&size=pruned&fp=fp16&token=4a9b58ac4042e7f623a5d5c9b85fb414" \
          -o /cyberrealisticpony/cyberrealisticPony_v150.safetensors
 
 COPY runner*.py /cyberrealisticpony/
