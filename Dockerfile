@@ -41,7 +41,7 @@ RUN curl -L "https://civitai.com/api/download/models/2469412?type=Model&format=S
 
 COPY runner*.py /cyberrealisticpony/
 COPY docker-entrypoint*.sh /
-RUN chmod +x /docker-entrypoint*.sh /
+RUN chmod +x /docker-entrypoint*.sh
 
 WORKDIR /
 ENTRYPOINT ["/docker-entrypoint.sh"]
