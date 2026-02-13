@@ -35,7 +35,6 @@ RUN apt-get update && \
 WORKDIR /cyberrealisticpony
 
 ARG access_token
-
 RUN curl -L "https://civitai.com/api/download/models/2469412?type=Model&format=SafeTensor&size=pruned&fp=fp16&token=$access_token" \
          -o /cyberrealisticpony/cyberrealisticPony_v150.safetensors
 
