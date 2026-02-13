@@ -21,7 +21,6 @@ def genObjectStorageClient(endpoint: str, token: str, secret: str) -> any:
         aws_secret_access_key=secret,
         config=object_storage_config,
     )
-
     return object_storage_client
 
 def genOutputPath(input_file_path: str, suffix: str | None = None) -> str:

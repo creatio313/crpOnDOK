@@ -12,7 +12,6 @@ import torch
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s %(message)s')
 
-# 環境変数からパラメータを取得
 arg_parser = argparse.ArgumentParser()
 arg_parser.add_argument(
     '--output',
