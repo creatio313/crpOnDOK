@@ -37,7 +37,7 @@ $promptList = @()
 # 二次元配列化
 foreach ($r in $rows) {
     # [filename, prompt, ng_prompt, suffix] の形式で配列に追加
-    $promptList += ,@($r.filename, $r.prompt, $r.ng_prompt, $r.suffix)
+    $promptList += ,@($r.file_path, $r.prompt, $r.ng_prompt, $r.suffix)
 }
 $promptJsonString = ConvertTo-Json @($promptList) -Compress
 
